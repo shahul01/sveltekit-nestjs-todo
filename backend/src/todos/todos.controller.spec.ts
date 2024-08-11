@@ -28,4 +28,16 @@ describe('TodosController', () => {
 
     expect(controller.findOne('1')).toEqual(expectedValue);
   });
+
+  it('should create', () => {
+    const randomId = Math.ceil(Math.random() * 1000).toString();
+    const addTodoPayload = {
+      id: randomId,
+      title: `${randomId}-title`,
+    };
+
+    const expectedValue = `Todo successfully added with title ${addTodoPayload.title}.`;
+
+    expect(controller.create(addTodoPayload)).toEqual(expectedValue);
+  });
 });

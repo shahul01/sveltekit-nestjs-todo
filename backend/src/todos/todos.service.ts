@@ -20,7 +20,7 @@ export class TodosService {
 
     this.todos.push(createTodoDto);
 
-    return `added todo with title ${createTodoDto.title}`;
+    return `Todo successfully added with title ${createTodoDto.title}.`;
   }
 
   findAll(): Todo[] {
