@@ -16,14 +16,17 @@ export class TodosService {
     // { id: '3', title: 'Task 3' },
   ];
 
-  create(createTodoDto: CreateTodoDto) {
+  async create(createTodoDto: CreateTodoDto) {
     const { id: reqTodoId, title: reqTodoTitle } = createTodoDto;
 
     const todo = new Todo();
     todo.id = reqTodoId;
     todo.title = reqTodoTitle;
 
-    this.todos.push(createTodoDto);
+    const { error } = await this.supabaseService.supabase
+      .from('todos')
+      .insert([todo]);
+    if (error) throw new Error(error.message);
 
     return `Todo successfully added with title ${createTodoDto.title}.`;
   }
