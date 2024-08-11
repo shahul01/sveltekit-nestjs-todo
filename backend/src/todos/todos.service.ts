@@ -1,15 +1,22 @@
 import { Injectable } from '@nestjs/common';
+import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 
 @Injectable()
 export class TodosService {
+  private todos: Todo[] = [
+    { id: '1', title: 'Task 1' },
+    { id: '2', title: 'Task 2' },
+    { id: '3', title: 'Task 3' },
+  ];
+
   create(createTodoDto: CreateTodoDto) {
     return 'This action adds a new todo';
   }
 
-  findAll() {
-    return `This action returns all todos`;
+  findAll(): Todo[] {
+    return this.todos;
   }
 
   findOne(id: number) {

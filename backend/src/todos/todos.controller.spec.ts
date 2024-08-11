@@ -16,5 +16,11 @@ describe('TodosController', () => {
 
   it('should be defined', () => {
     expect(controller).toBeDefined();
+
+    expect(controller.findAll()).not.toHaveLength(0);
+    expect(controller.findAll()).toHaveLength(3);
+
+    // TODO: add test that checks if values matches Entity
+
   });
 });
