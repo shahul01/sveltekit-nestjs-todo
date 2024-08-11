@@ -20,18 +20,17 @@
       const resLogin = await login.json();
       console.log(`resLogin: `, resLogin);
 
-      // console.log('Successfully logged in. Redirecting...');
-
-      email = '';
-      password = '';
-
       const isSuccessfullyLoggedIn = (/success/i).test(resLogin.message);
-      console.log(`isSuccessfullyLoggedIn: `, isSuccessfullyLoggedIn);
+
       if ( isSuccessfullyLoggedIn ) {
-        // toast('Redirecting...');
+        console.log('Successfully logged in. Redirecting...');
+        // toast('Successfully logged in. Redirecting...');
+        email = '';
+        password = '';
         await new Promise((res) => setTimeout(res, 2000) );
         goto('/');
       };
+      // TODO: else throw error
 
     } catch (error) {
       console.error(error);
