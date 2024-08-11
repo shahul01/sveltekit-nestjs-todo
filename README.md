@@ -21,5 +21,5 @@
     # using another terminal
     cd backend
     npm i
-    npm run dev
+    npm run start:dev
 ```
