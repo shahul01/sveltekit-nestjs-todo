@@ -2,13 +2,17 @@ import { Injectable } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
+import { SupabaseService } from '../supabase/supabase.service';
 
 @Injectable()
 export class TodosService {
+
+  constructor(private readonly supabaseService: SupabaseService) {}
+
   private todos: Todo[] = [
-    { id: '1', title: 'Task 1' },
-    { id: '2', title: 'Task 2' },
-    { id: '3', title: 'Task 3' },
+    // { id: '1', title: 'Task 1' },
+    // { id: '2', title: 'Task 2' },
+    // { id: '3', title: 'Task 3' },
   ];
 
   create(createTodoDto: CreateTodoDto) {
@@ -23,8 +27,17 @@ export class TodosService {
     return `Todo successfully added with title ${createTodoDto.title}.`;
   }
 
-  findAll(): Todo[] {
-    return this.todos;
+  async findAll(): Promise<Todo[]> {
+    type SBReturns = {
+      data: Todo[];
+      error: any;
+    };
+    const { data, error }: SBReturns = await this.supabaseService.supabase
+      .from('todos')
+      .select('*');
+    if (error) throw new Error(error.message);
+    console.log(`data: `, data);
+    return data;
   }
 
   findOne(id: string): Todo {
