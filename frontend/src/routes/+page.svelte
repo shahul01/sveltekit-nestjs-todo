@@ -1,6 +1,14 @@
 <script>
 
-let newTodo = '';
+let newTodoTitle = '';
+
+/**
+ * @typedef { {id:string, title:string} } Todo
+ */
+
+ /**
+  * @type Todo[]
+  */
 let todos = [
     { id: '1', title: 'Task 1', },
     { id: '2', title: 'Task 2', },
@@ -10,18 +18,18 @@ let todos = [
 function handleAddTodo() {
     const todoToAdd = {
         id: (todos.length + 1).toString(),
-        title: newTodo,
+        title: newTodoTitle,
     };
 
     todos = [...todos, todoToAdd];
-    newTodo = '';
+    newTodoTitle = '';
 };
 
 
 </script>
 
 <h1>Todo</h1>
-<input bind:value={newTodo} />
+<input bind:value={newTodoTitle} />
 <button type="button" on:click={handleAddTodo}>Add</button>
 
 <div class="todo-list">
