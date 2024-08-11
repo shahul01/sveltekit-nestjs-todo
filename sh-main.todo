@@ -18,6 +18,7 @@ Total:
     # techstack:
         ☐ feather icons
         ☐ good ui - ant?
+        ☐ vercel
 
 
 
@@ -46,6 +47,12 @@ Total:
 
 
     # docs & reference:
+      - https://github.com/huggingface/chat-ui
+      - docs.nestjs.com/recipes/crud-generator
+      - https://github.com/haixiangyan/nest-todo.git
+      - supabase
+        - Integrating Supabase NestJS - https://chatgpt.com/c/ff41cfb3-185d-41ff-9403-9fd0a5371d04
+        - Associate Todos with Users - https://chatgpt.com/c/10ad154e-91a6-41d8-8ce1-1443e04b88a2
 
 
 

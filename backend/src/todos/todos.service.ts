@@ -3,18 +3,11 @@ import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { SupabaseService } from '../supabase/supabase.service';
-import { PostgrestError, PostgrestSingleResponse } from '@supabase/supabase-js';
-import { PostgrestResponseSuccess } from '@supabase/postgrest-js';
+import { PostgrestError } from '@supabase/supabase-js';
 
 @Injectable()
 export class TodosService {
   constructor(private readonly supabaseService: SupabaseService) {}
-
-  private todos: Todo[] = [
-    // { id: '1', title: 'Task 1' },
-    // { id: '2', title: 'Task 2' },
-    // { id: '3', title: 'Task 3' },
-  ];
 
   async create(createTodoDto: CreateTodoDto) {
     const { id: reqTodoId, title: reqTodoTitle } = createTodoDto;
@@ -31,14 +24,15 @@ export class TodosService {
     return `Todo successfully added with title ${createTodoDto.title}.`;
   }
 
-  async findAll(): Promise<Todo[]> {
+  async findAll(userId: string): Promise<Todo[]> {
     type SBFindAll = {
       data: Todo[];
       error: PostgrestError;
     };
     const { data, error }: SBFindAll = await this.supabaseService.supabase
       .from('todos')
-      .select('*');
+      .select('*')
+      .eq('user_id', userId);
     if (error) throw new Error(error.message);
     return data;
   }

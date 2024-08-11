@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
@@ -12,9 +20,9 @@ export class TodosController {
     return this.todosService.create(createTodoDto);
   }
 
-  @Get()
-  findAll() {
-    return this.todosService.findAll();
+  @Get(':userId')
+  findAll(@Param('userId') userId: string) {
+    return this.todosService.findAll(userId);
   }
 
   @Get(':id')
