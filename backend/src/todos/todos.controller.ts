@@ -23,12 +23,14 @@ type Req = {
 export class TodosController {
   constructor(private readonly todosService: TodosService) {}
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Body() createTodoDto: CreateTodoDto, @Request() req: Req) {
-    const userId = req.user.id;
-    console.log(`userId: `, userId);
-    return this.todosService.create(createTodoDto, userId);
+  // , @Request() req: Req
+  create(
+    @Headers('Authorization') authHeader: string,
+    @Body() createTodoDto: CreateTodoDto,
+  ) {
+    return this.todosService.create(createTodoDto, authHeader);
   }
 
   // @UseGuards(AuthGuard('jwt'))
