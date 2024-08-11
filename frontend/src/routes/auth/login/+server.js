@@ -14,7 +14,7 @@ export async function POST({ request }) {
 
   if (error) {
     console.error('Error logging in: ', error.message);
-    statusMessage = 'Failed to log in user.';
+    statusMessage = `Failed to log in user. ${error.message}`;
   } else {
     statusMessage = `Successfully logged in user`;
   };

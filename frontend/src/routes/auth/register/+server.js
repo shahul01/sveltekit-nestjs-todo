@@ -14,7 +14,7 @@ export async function POST({ request }) {
 
   if (error) {
     console.error('Error registering: ', error.message);
-    statusMessage = 'Failed to register user.';
+    statusMessage = `Failed to register user. ${error.message}`;
   } else {
     statusMessage = `Successfully registered user with email ${data.user?.email}`;
   };
