@@ -8,6 +8,7 @@
   - Postgres
 
 ## Screenshots
+![home.png](./frontend/static/screenshots/home.png)
 
 
 ## To run
