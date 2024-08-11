@@ -3,10 +3,11 @@ import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { SupabaseService } from '../supabase/supabase.service';
+import { PostgrestError, PostgrestSingleResponse } from '@supabase/supabase-js';
+import { PostgrestResponseSuccess } from '@supabase/postgrest-js';
 
 @Injectable()
 export class TodosService {
-
   constructor(private readonly supabaseService: SupabaseService) {}
 
   private todos: Todo[] = [
@@ -28,20 +29,29 @@ export class TodosService {
   }
 
   async findAll(): Promise<Todo[]> {
-    type SBReturns = {
+    type SBFindAll = {
       data: Todo[];
-      error: any;
+      error: PostgrestError;
     };
-    const { data, error }: SBReturns = await this.supabaseService.supabase
+    const { data, error }: SBFindAll = await this.supabaseService.supabase
       .from('todos')
       .select('*');
     if (error) throw new Error(error.message);
-    console.log(`data: `, data);
     return data;
   }
 
-  findOne(id: string): Todo {
-    return this.todos.find((currTodo) => currTodo.id === id);
+  async findOne(id: string): Promise<Todo | null> {
+    type SBFindOne = {
+      data: Todo | null;
+      error: PostgrestError;
+    };
+    const { data, error }: SBFindOne = await this.supabaseService.supabase
+      .from('todos')
+      .select('*')
+      .eq('id', id)
+      .single();
+    if (error) throw new Error(error.message);
+    return data;
   }
 
   update(id: number, updateTodoDto: UpdateTodoDto) {
