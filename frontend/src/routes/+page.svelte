@@ -1,5 +1,6 @@
 <script>
   import { base } from '$app/paths'
+  import { nanoid } from 'nanoid';
   import { onMount } from 'svelte';
 
   let newTodoTitle = '';
@@ -17,7 +18,7 @@
 
   async function handleAddTodo() {
     const todoToAdd = {
-      id: (todos.length + 1).toString(),
+      id: nanoid(),
       title: newTodoTitle,
     };
 
