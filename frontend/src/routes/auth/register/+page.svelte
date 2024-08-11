@@ -5,17 +5,30 @@
   let password = '';
 
   async function handleRegister() {
-    // if (!valid) return;
+    try {
 
-    const register = await fetch(`${base}/auth/register`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({email, password})
-    });
-    const resRegister = await register.json();
-    console.log(`resRegister: `, resRegister);
+      // TODO: if (!valid) return;
+      const register = await fetch(`${base}/auth/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({email, password})
+      });
+      const resRegister = await register.json();
+      console.log(`resRegister: `, resRegister);
 
-    return console.log('Successfully registered user.');
+      const isSuccessfullyRegistered = (/success/i).test(resRegister.message);
+      if (isSuccessfullyRegistered) {
+        console.log('Successfully registered user.');
+
+        email = '';
+        password = '';
+      };
+      // TODO: else throw error;
+
+    } catch (error) {
+      console.error(error);
+    };
+
   };
 
 </script>
