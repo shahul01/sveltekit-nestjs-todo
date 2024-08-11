@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { SupabaseModule } from 'src/supabase/supabase.module';
 import { TodosService } from './todos.service';
 import { TodosController } from './todos.controller';
-import { SupabaseModule } from '../supabase/supabase.module';
+import { JwtStrategy } from 'src/auth/jwt.strategy';
 
 @Module({
-  imports: [SupabaseModule],
+  imports: [JwtStrategy, SupabaseModule],
   controllers: [TodosController],
   providers: [TodosService],
 })

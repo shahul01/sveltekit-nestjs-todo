@@ -9,8 +9,8 @@ import { PostgrestError } from '@supabase/supabase-js';
 export class TodosService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
-  async create(createTodoDto: CreateTodoDto) {
-    const { id: reqTodoId, title: reqTodoTitle, userId } = createTodoDto;
+  async create(createTodoDto: CreateTodoDto, userId: string) {
+    const { id: reqTodoId, title: reqTodoTitle } = createTodoDto;
 
     const todo = new Todo();
     todo.id = reqTodoId;
