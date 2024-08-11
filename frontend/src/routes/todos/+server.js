@@ -1,14 +1,18 @@
 import { json } from '@sveltejs/kit';
-import { BACKEND_BASEURL, TEMP_SUPABASE_USER } from '$env/static/private';
+import { BACKEND_BASEURL } from '$env/static/private';
 
 
 /**
  * @type { import('./$types').RequestHandler }
  * */
-export async function GET() {
-  const getTodos =  await fetch(`http://${BACKEND_BASEURL}/todos/${TEMP_SUPABASE_USER}`);
+export async function GET({ request }) {
+  const getTodos =  await fetch(`http://${BACKEND_BASEURL}/todos/`, {
+    headers: {'Authorization': `${request.headers.get('Authorization')}`}
+  });
   /** @type { import('$lib/types').Todo[] } */
   const resTodos = await getTodos.json();
+
+  if (!getTodos.ok) console.error('Error fetching todos');
 
   return json({ data: resTodos });
 
@@ -20,7 +24,6 @@ export async function POST({ request }) {
   const addTodoPayloadRaw = await request.json();
   const AddTodoPayloadWithUserId = {
     ...addTodoPayloadRaw,
-    userId: TEMP_SUPABASE_USER
   };
   const addTodoPayload = JSON.stringify( AddTodoPayloadWithUserId );
 
