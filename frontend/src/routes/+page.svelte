@@ -10,19 +10,16 @@ let newTodoTitle = '';
   * @type Todo[]
   */
 let todos = [
-    { id: '1', title: 'Task 1', },
-    { id: '2', title: 'Task 2', },
-    { id: '3', title: 'Task 3', },
 ];
 
 function handleAddTodo() {
-    const todoToAdd = {
-        id: (todos.length + 1).toString(),
-        title: newTodoTitle,
-    };
+  const todoToAdd = {
+    id: (todos.length + 1).toString(),
+    title: newTodoTitle,
+  };
 
-    todos = [...todos, todoToAdd];
-    newTodoTitle = '';
+  todos = [...todos, todoToAdd];
+  newTodoTitle = '';
 };
 
 
@@ -33,9 +30,9 @@ function handleAddTodo() {
 <button type="button" on:click={handleAddTodo}>Add</button>
 
 <div class="todo-list">
-    {#each todos as currTodo (currTodo.id)}
-        <div class="todo">
-            {currTodo.title}
-        </div>
-    {/each}
+  {#each todos as currTodo (currTodo.id)}
+    <div class="todo">
+      {currTodo.title}
+    </div>
+  {/each}
 </div>
