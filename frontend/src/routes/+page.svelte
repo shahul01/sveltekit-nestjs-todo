@@ -1,21 +1,18 @@
 <script>
+  import { base } from '$app/paths'
+  import { onMount } from 'svelte';
 
   let newTodoTitle = '';
 
-  /**
-   * @typedef { {id:string, title:string} } Todo
-   */
-
-  /**
-    * @type Todo[]
-    */
+  /** @type {import('$lib/types').Todo[]} */
   let todos = [];
 
-  /**
-   * @return Promise<Todo[]>
-   */
-  async function fetchTodos() {
-    await fetch()
+  async function loadTodos() {
+    const loadingTodos = await fetch(`${base}/todos`);
+    const resLoadingTodos = await loadingTodos.json();
+    todos = resLoadingTodos.data;
+    console.log(`todos: `, Array.isArray(todos), todos);
+    return todos;
   };
 
   function handleAddTodo() {
@@ -27,6 +24,11 @@
     todos = [...todos, todoToAdd];
     newTodoTitle = '';
   };
+
+  onMount(() => {
+    loadTodos();
+
+  });
 
 
 </script>
