@@ -10,7 +10,7 @@ export class TodosService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
   async create(createTodoDto: CreateTodoDto) {
-    const { id: reqTodoId, title: reqTodoTitle } = createTodoDto;
+    const { id: reqTodoId, title: reqTodoTitle, userId } = createTodoDto;
 
     const todo = new Todo();
     todo.id = reqTodoId;
@@ -18,7 +18,7 @@ export class TodosService {
 
     const { error } = await this.supabaseService.supabase
       .from('todos')
-      .insert([todo]);
+      .insert([{ ...todo, user_id: userId }]);
     if (error) throw new Error(error.message);
 
     return `Todo successfully added with title ${createTodoDto.title}.`;
