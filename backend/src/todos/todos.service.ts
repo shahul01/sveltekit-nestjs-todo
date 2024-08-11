@@ -19,8 +19,8 @@ export class TodosService {
     return this.todos;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} todo`;
+  findOne(id: string) {
+    return this.todos.find((currTodo) => currTodo.id === id);
   }
 
   update(id: number, updateTodoDto: UpdateTodoDto) {

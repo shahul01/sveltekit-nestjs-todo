@@ -14,13 +14,18 @@ describe('TodosController', () => {
     controller = module.get<TodosController>(TodosController);
   });
 
-  it('should be defined', () => {
+  it('should findAll', () => {
     expect(controller).toBeDefined();
 
     expect(controller.findAll()).not.toHaveLength(0);
     expect(controller.findAll()).toHaveLength(3);
 
     // TODO: add test that checks if values matches Entity
+  });
 
+  it('should findOne', () => {
+    const expectedValue = { id: '1', title: 'Task 1' };
+
+    expect(controller.findOne('1')).toEqual(expectedValue);
   });
 });
