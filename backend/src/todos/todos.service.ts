@@ -12,14 +12,22 @@ export class TodosService {
   ];
 
   create(createTodoDto: CreateTodoDto) {
-    return 'This action adds a new todo';
+    const { id: reqTodoId, title: reqTodoTitle } = createTodoDto;
+
+    const todo = new Todo();
+    todo.id = reqTodoId;
+    todo.title = reqTodoTitle;
+
+    this.todos.push(createTodoDto);
+
+    return `added todo with title ${createTodoDto.title}`;
   }
 
   findAll(): Todo[] {
     return this.todos;
   }
 
-  findOne(id: string) {
+  findOne(id: string): Todo {
     return this.todos.find((currTodo) => currTodo.id === id);
   }
 
