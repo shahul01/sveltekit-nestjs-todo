@@ -43,6 +43,7 @@
 
 
 <h1>Todo</h1>
+<!-- {#if todos.length} {/if} -->
 <input bind:value={newTodoTitle} />
 <button type="button" on:click={handleAddTodo}>Add</button>
 
