@@ -7,7 +7,7 @@ import { BACKEND_BASEURL } from '$env/static/private';
  * */
 export async function GET({ request }) {
   const getTodos =  await fetch(`http://${BACKEND_BASEURL}/todos/`, {
-    headers: {'Authorization': `${request.headers.get('Authorization')}`}
+    headers: {'Authorization': request.headers.get('Authorization') || ''}
   });
   /** @type { import('$lib/types').Todo[] } */
   const resTodos = await getTodos.json();
@@ -22,14 +22,14 @@ export async function GET({ request }) {
 export async function POST({ request }) {
 
   const addTodoPayloadRaw = await request.json();
-  const AddTodoPayloadWithUserId = {
-    ...addTodoPayloadRaw,
-  };
-  const addTodoPayload = JSON.stringify( AddTodoPayloadWithUserId );
+  const addTodoPayload = JSON.stringify( addTodoPayloadRaw );
 
   const addTodos = await fetch(`http://${BACKEND_BASEURL}/todos`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': request.headers.get('Authorization') || ''
+     },
     body: addTodoPayload
   });
 
