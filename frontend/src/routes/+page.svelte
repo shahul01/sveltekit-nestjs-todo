@@ -1,26 +1,32 @@
 <script>
 
-let newTodoTitle = '';
+  let newTodoTitle = '';
 
-/**
- * @typedef { {id:string, title:string} } Todo
- */
+  /**
+   * @typedef { {id:string, title:string} } Todo
+   */
 
- /**
-  * @type Todo[]
-  */
-let todos = [
-];
+  /**
+    * @type Todo[]
+    */
+  let todos = [];
 
-function handleAddTodo() {
-  const todoToAdd = {
-    id: (todos.length + 1).toString(),
-    title: newTodoTitle,
+  /**
+   * @return Promise<Todo[]>
+   */
+  async function fetchTodos() {
+    await fetch()
   };
 
-  todos = [...todos, todoToAdd];
-  newTodoTitle = '';
-};
+  function handleAddTodo() {
+    const todoToAdd = {
+      id: (todos.length + 1).toString(),
+      title: newTodoTitle,
+    };
+
+    todos = [...todos, todoToAdd];
+    newTodoTitle = '';
+  };
 
 
 </script>
