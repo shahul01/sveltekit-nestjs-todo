@@ -20,9 +20,8 @@
     const todoToAdd = {
       id: nanoid(),
       title: newTodoTitle,
+      userId: 'added in todos/+server.js'
     };
-
-    // todos = [...todos, todoToAdd];
 
     await fetch(`${base}/todos`, {
       method: 'POST',
