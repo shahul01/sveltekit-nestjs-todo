@@ -15,8 +15,10 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+    it('should return server running message', () => {
+      const expectedText = 'NestJs server is running!';
+
+      expect(appController.ping()).toBe(expectedText);
     });
   });
 });
