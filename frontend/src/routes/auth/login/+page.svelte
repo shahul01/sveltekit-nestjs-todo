@@ -23,6 +23,8 @@
       const isSuccessfullyLoggedIn = (/success/i).test(resLogin.message);
 
       if ( isSuccessfullyLoggedIn ) {
+        localStorage.setItem('token', resLogin.accessToken);
+
         console.log('Successfully logged in. Redirecting...');
         // toast('Successfully logged in. Redirecting...');
         email = '';

@@ -9,7 +9,10 @@
   $: todos = [];
 
   async function loadTodos() {
-    const loadingTodos = await fetch(`${base}/todos`);
+    const token = localStorage.getItem('token');
+    const loadingTodos = await fetch(`${base}/todos`, {
+      headers: { 'Authorization': `Bearer ${token}` },
+    });
     const resLoadingTodos = await loadingTodos.json();
     todos = await resLoadingTodos.data;
     console.log(`todos: `, Array.isArray(todos), todos);
@@ -23,9 +26,14 @@
       userId: 'added in todos/+server.js'
     };
 
+    const token = localStorage.getItem('token');
+
     await fetch(`${base}/todos`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
       body: JSON.stringify(todoToAdd)
     });
 
