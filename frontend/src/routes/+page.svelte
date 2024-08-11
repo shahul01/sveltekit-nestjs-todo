@@ -5,24 +5,32 @@
   let newTodoTitle = '';
 
   /** @type {import('$lib/types').Todo[]} */
-  let todos = [];
+  $: todos = [];
 
   async function loadTodos() {
     const loadingTodos = await fetch(`${base}/todos`);
     const resLoadingTodos = await loadingTodos.json();
-    todos = resLoadingTodos.data;
+    todos = await resLoadingTodos.data;
     console.log(`todos: `, Array.isArray(todos), todos);
     return todos;
   };
 
-  function handleAddTodo() {
+  async function handleAddTodo() {
     const todoToAdd = {
       id: (todos.length + 1).toString(),
       title: newTodoTitle,
     };
 
-    todos = [...todos, todoToAdd];
+    // todos = [...todos, todoToAdd];
+
+    await fetch(`${base}/todos`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(todoToAdd)
+    });
+
     newTodoTitle = '';
+    await loadTodos();
   };
 
   onMount(() => {
@@ -33,9 +41,12 @@
 
 </script>
 
+
 <h1>Todo</h1>
 <input bind:value={newTodoTitle} />
 <button type="button" on:click={handleAddTodo}>Add</button>
+
+<!-- <pre>{JSON.stringify(todos, null, 2)}</pre> -->
 
 <div class="todo-list">
   {#each todos as currTodo (currTodo.id)}

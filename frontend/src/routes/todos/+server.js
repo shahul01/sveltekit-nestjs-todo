@@ -13,3 +13,19 @@ export async function GET() {
   return json({ data: resTodos });
 
 };
+
+// /** @param {string} todoPayload */
+export async function POST({ request }) {
+
+  const addTodoPayloadRaw = await request.json();
+  const addTodoPayload = JSON.stringify( addTodoPayloadRaw );
+
+  const addTodos = await fetch(`http://${BACKEND_BASEURL}/todos`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: addTodoPayload
+  });
+
+  const resAddTodos= await addTodos.text();
+  return json({response:resAddTodos});
+};
