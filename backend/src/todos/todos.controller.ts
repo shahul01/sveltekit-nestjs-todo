@@ -7,6 +7,7 @@ import {
   Param,
   Delete,
   UseGuards,
+  Headers,
   Request,
 } from '@nestjs/common';
 import { TodosService } from './todos.service';
@@ -30,13 +31,17 @@ export class TodosController {
     return this.todosService.create(createTodoDto, userId);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  // @UseGuards(AuthGuard('jwt'))
   @Get()
-  findAll(@Request() req: Req) {
-    const userId = req.user.id;
-    return this.todosService.findAll(userId);
+  // @Request() req: Request
+  findAll(@Headers('Authorization') authHeader: string) {
+    // let authHeader;
+    // console.log(`authHeader Get: `, authHeader);
+    // console.log(`##req: `, req['user']);
+    return this.todosService.findAll(authHeader);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.todosService.findOne(id);

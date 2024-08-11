@@ -1,13 +1,17 @@
+import { PostgrestError } from '@supabase/supabase-js';
 import { Injectable } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { SupabaseService } from '../supabase/supabase.service';
-import { PostgrestError } from '@supabase/supabase-js';
+import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class TodosService {
-  constructor(private readonly supabaseService: SupabaseService) {}
+  constructor(
+    private readonly supabaseService: SupabaseService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   async create(createTodoDto: CreateTodoDto, userId: string) {
     const { id: reqTodoId, title: reqTodoTitle } = createTodoDto;
@@ -24,16 +28,33 @@ export class TodosService {
     return `Todo successfully added with title ${createTodoDto.title}.`;
   }
 
-  async findAll(userId: string): Promise<Todo[]> {
+  async findAll(authHeader: string): Promise<Todo[]> {
+    // console.log(`request: `, request);
+    // // @ts-expect-error 2339
+    // const user = request.user;
+    // console.log(`user: `, user);
+    // const userId = user?.id;
+
+    console.log(`authHeader: `, authHeader);
     type SBFindAll = {
       data: Todo[];
       error: PostgrestError;
     };
+
+    const token = authHeader.split(' ')[1];
+    const payload = this.jwtService.decode(token) as any;
+    const userId = payload.sub;
+
+    console.log(`userId: `, userId);
+    if (!userId) return;
+
     const { data, error }: SBFindAll = await this.supabaseService.supabase
       .from('todos')
       .select('*')
       .eq('user_id', userId);
     if (error) throw new Error(error.message);
+    console.error(`error: `, error);
+    console.log(`data: `, data);
     return data;
   }
 
