@@ -34,7 +34,7 @@ export class TodosService {
       .select('*')
       .eq('user_id', userId);
     if (error) throw new Error(error.message);
-    console.error(`error: `, error);
+    // console.error(`error: `, error);
     // console.log(`data: `, data);
 
     return data;
@@ -63,12 +63,19 @@ export class TodosService {
       .select('*');
     if (error) throw new Error(error.message);
 
-    console.log(`data: `, data);
+    // console.log(`data: `, data);
 
     return `Todo successfully deleted with title '${todo.title}'.`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} todo`;
+  async remove(id: string) {
+    const { data, error } = await this.supabaseService.supabase
+      .from('todos')
+      .delete()
+      .eq('id', id);
+
+    if (error) throw new Error(error.message);
+
+    return `Todo successfully deleted with id '${id}'`;
   }
 }

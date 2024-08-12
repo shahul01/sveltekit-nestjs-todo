@@ -50,8 +50,9 @@ export class TodosController {
     return this.todosService.update(req, id, updateTodoDto);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.todosService.remove(+id);
+    return this.todosService.remove(id);
   }
 }
