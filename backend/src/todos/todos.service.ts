@@ -4,7 +4,7 @@ import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { SupabaseService } from '../supabase/supabase.service';
-import type { SupabaseRequest } from 'src/types';
+import type { SBFindAll, SBFindOne, SupabaseRequest } from 'src/types';
 
 @Injectable()
 export class TodosService {
@@ -29,10 +29,6 @@ export class TodosService {
     const userId = req.user.id;
     console.log(`userId: `, userId);
 
-    type SBFindAll = {
-      data: Todo[];
-      error: PostgrestError;
-    };
     const { data, error }: SBFindAll = await this.supabaseService.supabase
       .from('todos')
       .select('*')
@@ -45,10 +41,6 @@ export class TodosService {
   }
 
   async findOne(id: string): Promise<Todo | null> {
-    type SBFindOne = {
-      data: Todo | null;
-      error: PostgrestError;
-    };
     const { data, error }: SBFindOne = await this.supabaseService.supabase
       .from('todos')
       .select('*')
