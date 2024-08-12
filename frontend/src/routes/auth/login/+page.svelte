@@ -1,6 +1,7 @@
 <script>
 	import { goto } from "$app/navigation";
 	import { base } from "$app/paths";
+	import { sleep } from "$lib/utils";
 
 
   let email = '';
@@ -15,7 +16,8 @@
         body: JSON.stringify({email, password})
       });
 
-      // TODO: if failed toast to tell user if they verified their email
+      // TODO: if failed / redirected from register page
+      //   toast to tell user if they verified their email
 
       const resLogin = await login.json();
       console.log(`resLogin: `, resLogin);
@@ -29,7 +31,7 @@
         // toast('Successfully logged in. Redirecting...');
         email = '';
         password = '';
-        await new Promise((res) => setTimeout(res, 600) );
+        await sleep(600);
         goto('/');
       };
       // TODO: else throw error
@@ -67,11 +69,17 @@
       Login
     </button>
   </form>
+  <p class='register-note'>
+    New user?
+    <a href="/auth/register">Register</a>
+    here
+  </p>
 </div>
 
 <style>
   .form-container {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 80dvh;
@@ -82,5 +90,9 @@
     flex-direction: column;
     gap: 0.5rem;
     max-width: 12rem;
+  }
+
+  p.register-note {
+    font-size: 0.8rem;
   }
 </style>

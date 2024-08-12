@@ -1,5 +1,7 @@
 <script>
+	import { goto } from '$app/navigation';
 	import { base } from '$app/paths';
+	import { sleep } from '$lib/utils';
 
   let email = '';
   let password = '';
@@ -22,6 +24,11 @@
 
         email = '';
         password = '';
+
+        // toast('Successfully registered, redirecting to login page...');
+        await sleep(1000);
+        goto('/auth/login');
+
       };
       // TODO: else throw error;
 
