@@ -1,17 +1,18 @@
 import { PostgrestError } from '@supabase/supabase-js';
-import { Injectable, Request } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { SupabaseService } from '../supabase/supabase.service';
+import type { SupabaseRequest } from 'src/types';
 
 @Injectable()
 export class TodosService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
-  async create(createTodoDto: CreateTodoDto, req: Request) {
+  async create(createTodoDto: CreateTodoDto, req: SupabaseRequest) {
     const { title: reqTodoTitle } = createTodoDto;
-    const userId = req.user.id;
+    const userId = req.user?.id;
 
     const todo = new Todo();
     todo.title = reqTodoTitle;
@@ -24,7 +25,7 @@ export class TodosService {
     return `Todo successfully added with title ${createTodoDto.title}.`;
   }
 
-  async findAll(req: Request): Promise<Todo[]> {
+  async findAll(req: SupabaseRequest): Promise<Todo[]> {
     const userId = req.user.id;
     console.log(`userId: `, userId);
 

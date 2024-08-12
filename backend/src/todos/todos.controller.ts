@@ -13,6 +13,7 @@ import { TodosService } from './todos.service';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { AuthGuard } from '@nestjs/passport';
+import type { SupabaseRequest } from 'src/types';
 
 @Controller('todos')
 export class TodosController {
@@ -20,13 +21,16 @@ export class TodosController {
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
-  create(@Request() req: Request, @Body() createTodoDto: CreateTodoDto) {
+  create(
+    @Request() req: SupabaseRequest,
+    @Body() createTodoDto: CreateTodoDto,
+  ) {
     return this.todosService.create(createTodoDto, req);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  findAll(@Request() req: Request) {
+  findAll(@Request() req: SupabaseRequest) {
     return this.todosService.findAll(req);
   }
 
