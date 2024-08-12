@@ -1,27 +1,20 @@
 import { PostgrestError } from '@supabase/supabase-js';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Request } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { SupabaseService } from '../supabase/supabase.service';
-import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class TodosService {
-  constructor(
-    private readonly supabaseService: SupabaseService,
-    private readonly jwtService: JwtService,
-  ) {}
+  constructor(private readonly supabaseService: SupabaseService) {}
 
-  async create(createTodoDto: CreateTodoDto, authHeader: string) {
+  async create(createTodoDto: CreateTodoDto, req: Request) {
     const { title: reqTodoTitle } = createTodoDto;
+    const userId = req.user.id;
 
     const todo = new Todo();
     todo.title = reqTodoTitle;
-
-    const token = authHeader.split(' ')[1];
-    const payload = this.jwtService.decode(token) as any;
-    const userId = payload.sub;
 
     const { error } = await this.supabaseService.supabase
       .from('todos')
@@ -31,26 +24,14 @@ export class TodosService {
     return `Todo successfully added with title ${createTodoDto.title}.`;
   }
 
-  async findAll(authHeader: string): Promise<Todo[]> {
-    // console.log(`request: `, request);
-    // // @ts-expect-error 2339
-    // const user = request.user;
-    // console.log(`user: `, user);
-    // const userId = user?.id;
+  async findAll(req: Request): Promise<Todo[]> {
+    const userId = req.user.id;
+    console.log(`userId: `, userId);
 
-    console.log(`authHeader: `, authHeader);
     type SBFindAll = {
       data: Todo[];
       error: PostgrestError;
     };
-
-    const token = authHeader.split(' ')[1];
-    const payload = this.jwtService.decode(token) as any;
-    const userId = payload.sub;
-
-    console.log(`userId: `, userId);
-    if (!userId) return;
-
     const { data, error }: SBFindAll = await this.supabaseService.supabase
       .from('todos')
       .select('*')
@@ -58,6 +39,7 @@ export class TodosService {
     if (error) throw new Error(error.message);
     console.error(`error: `, error);
     console.log(`data: `, data);
+
     return data;
   }
 
