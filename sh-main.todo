@@ -8,7 +8,17 @@ Total:
 
 
     # important:
+      ☐ enable useGuards in nestjs
+      ☐ use logger middleware in nestjs
+      ☐ enable registering new user
 
+      ☐ proper navbar
+
+      ☐ update todo
+      ☐ delete todo
+
+      ☐ make repo public
+      ☐ add release
 
 
     # design:

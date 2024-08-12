@@ -14,10 +14,9 @@ export class TodosService {
   ) {}
 
   async create(createTodoDto: CreateTodoDto, authHeader: string) {
-    const { id: reqTodoId, title: reqTodoTitle } = createTodoDto;
+    const { title: reqTodoTitle } = createTodoDto;
 
     const todo = new Todo();
-    todo.id = reqTodoId;
     todo.title = reqTodoTitle;
 
     const token = authHeader.split(' ')[1];
