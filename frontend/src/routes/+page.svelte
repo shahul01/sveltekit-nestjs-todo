@@ -1,12 +1,12 @@
 <script>
   import { base } from '$app/paths'
   import { onMount } from 'svelte';
+  import { authStore } from '$lib/stores/auth';
 
-  let newTodoTitle = '';
 
   /** @type {import('$lib/types').Todo[]} */
   $: todos = [];
-  let isTokenStored = false;
+  let newTodoTitle = '';
 
   async function loadTodos() {
     try {
@@ -46,33 +46,17 @@
 
   };
 
-  function checkToken() {
-    isTokenStored = !!localStorage.getItem('token');
-  };
-
-  function handleLogout() {
-    localStorage.removeItem('token');
-    checkToken();
-  };
-
   onMount(() => {
     loadTodos();
-    checkToken();
-
   });
 
 
 </script>
 
-{#if isTokenStored}
-  <button type='button' on:click={handleLogout}>Logout</button>
-{:else}
-  <a href='/auth/login'>Login</a>
-{/if}
 
 <div class="header-form-list">
   <h1>Todo</h1>
-  {#if isTokenStored && Array.isArray(todos)}
+  {#if $authStore.isAuth && Array.isArray(todos)}
     <div class="form-todo-list">
       <form on:submit|preventDefault={handleAddTodo}>
 
