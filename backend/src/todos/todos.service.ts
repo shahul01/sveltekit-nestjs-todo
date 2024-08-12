@@ -10,7 +10,7 @@ import type { SBFindAll, SBFindOne, SupabaseRequest } from 'src/types';
 export class TodosService {
   constructor(private readonly supabaseService: SupabaseService) {}
 
-  async create(createTodoDto: CreateTodoDto, req: SupabaseRequest) {
+  async create(req: SupabaseRequest, createTodoDto: CreateTodoDto) {
     const { title: reqTodoTitle } = createTodoDto;
     const userId = req.user?.id;
 
@@ -40,7 +40,7 @@ export class TodosService {
     return data;
   }
 
-  async findOne(id: string, req: SupabaseRequest): Promise<Todo | null> {
+  async findOne(req: SupabaseRequest, id: string): Promise<Todo | null> {
     const { data, error }: SBFindOne = await this.supabaseService.supabase
       .from('todos')
       .select('*')

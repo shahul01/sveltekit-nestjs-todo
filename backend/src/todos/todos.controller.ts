@@ -25,7 +25,7 @@ export class TodosController {
     @Request() req: SupabaseRequest,
     @Body() createTodoDto: CreateTodoDto,
   ) {
-    return this.todosService.create(createTodoDto, req);
+    return this.todosService.create(req, createTodoDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
@@ -37,7 +37,7 @@ export class TodosController {
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findOne(@Request() req: SupabaseRequest, @Param('id') id: string) {
-    return this.todosService.findOne(id, req);
+    return this.todosService.findOne(req, id);
   }
 
   @Patch(':id')
