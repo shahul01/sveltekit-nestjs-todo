@@ -36,8 +36,8 @@ export class TodosController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.todosService.findOne(id);
+  findOne(@Request() req: SupabaseRequest, @Param('id') id: string) {
+    return this.todosService.findOne(id, req);
   }
 
   @Patch(':id')

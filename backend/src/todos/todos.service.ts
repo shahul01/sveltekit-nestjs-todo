@@ -35,18 +35,20 @@ export class TodosService {
       .eq('user_id', userId);
     if (error) throw new Error(error.message);
     console.error(`error: `, error);
-    console.log(`data: `, data);
+    // console.log(`data: `, data);
 
     return data;
   }
 
-  async findOne(id: string): Promise<Todo | null> {
+  async findOne(id: string, req: SupabaseRequest): Promise<Todo | null> {
     const { data, error }: SBFindOne = await this.supabaseService.supabase
       .from('todos')
       .select('*')
+      .eq('user_id', req.user.id)
       .eq('id', id)
       .single();
     if (error) throw new Error(error.message);
+
     return data;
   }
 
