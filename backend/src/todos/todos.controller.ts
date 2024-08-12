@@ -40,9 +40,14 @@ export class TodosController {
     return this.todosService.findOne(req, id);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) {
-    return this.todosService.update(+id, updateTodoDto);
+  update(
+    @Request() req: SupabaseRequest,
+    @Param('id') id: string,
+    @Body() updateTodoDto: UpdateTodoDto,
+  ) {
+    return this.todosService.update(req, id, updateTodoDto);
   }
 
   @Delete(':id')

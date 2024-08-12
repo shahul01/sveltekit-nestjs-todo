@@ -22,7 +22,7 @@ export class TodosService {
       .insert([{ ...todo, user_id: userId }]);
     if (error) throw new Error(error.message);
 
-    return `Todo successfully added with title ${createTodoDto.title}.`;
+    return `Todo successfully added with title '${createTodoDto.title}'.`;
   }
 
   async findAll(req: SupabaseRequest): Promise<Todo[]> {
@@ -44,7 +44,7 @@ export class TodosService {
     const { data, error }: SBFindOne = await this.supabaseService.supabase
       .from('todos')
       .select('*')
-      .eq('user_id', req.user.id)
+      // .eq('user_id', req.user.id)
       .eq('id', id)
       .single();
     if (error) throw new Error(error.message);
@@ -52,8 +52,20 @@ export class TodosService {
     return data;
   }
 
-  update(id: number, updateTodoDto: UpdateTodoDto) {
-    return `This action updates a #${id} todo`;
+  async update(req: SupabaseRequest, id: string, updateTodoDto: UpdateTodoDto) {
+    const todo = new Todo();
+    todo.title = updateTodoDto.title;
+
+    const { data, error } = await this.supabaseService.supabase
+      .from('todos')
+      .update([{ ...todo }])
+      .eq('id', id)
+      .select('*');
+    if (error) throw new Error(error.message);
+
+    console.log(`data: `, data);
+
+    return `Todo successfully deleted with title '${todo.title}'.`;
   }
 
   remove(id: number) {
