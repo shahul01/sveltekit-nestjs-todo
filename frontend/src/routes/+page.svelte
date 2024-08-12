@@ -7,6 +7,7 @@
 
   /** @type {import('$lib/types').Todo[]} */
   $: todos = [];
+  $: isTokenStored = false;
 
   async function loadTodos() {
     const token = localStorage.getItem('token');
@@ -41,26 +42,98 @@
     await loadTodos();
   };
 
+  function checkToken() {
+    isTokenStored = !!localStorage.getItem('token');
+  };
+
+  function handleLogout() {
+    localStorage.removeItem('token');
+    checkToken();
+  };
+
   onMount(() => {
     loadTodos();
+    checkToken();
 
   });
 
 
 </script>
 
+{#if isTokenStored}
+  <button type='button' on:click={handleLogout}>Logout</button>
+{:else}
+  <a href='/auth/login'>Login</a>
+{/if}
 
-<h1>Todo</h1>
-<!-- {#if todos.length} {/if} -->
-<input bind:value={newTodoTitle} />
-<button type="button" on:click={handleAddTodo}>Add</button>
+<div class="app">
+  <h1>Todo</h1>
+  {#if isTokenStored && todos.length}
+    <div class="form-todo-list">
+      <form on:submit|preventDefault={handleAddTodo}>
 
-<!-- <pre>{JSON.stringify(todos, null, 2)}</pre> -->
+        <input
+          type="text"
+          bind:value={newTodoTitle}
+          placeholder="Add todo"
+          required
+        />
+        <button type="submit">Add</button>
 
-<div class="todo-list">
-  {#each todos as currTodo (currTodo.id)}
-    <div class="todo">
-      {currTodo.title}
+      </form>
+      <div class="todo-list">
+        {#each todos as currTodo (currTodo.id)}
+          <div class="todo">{currTodo.title}</div>
+        {/each}
+
+      </div>
     </div>
-  {/each}
+  {:else}
+    <p>
+      <em>Login to create and list todos</em>
+    </p>
+  {/if}
+
 </div>
+
+<style>
+
+  button {
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .app {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 90dvh;
+    /* width: 10rem; */
+  }
+
+  .form-todo-list {
+    width: auto;
+  }
+
+  form {
+    margin-bottom: 0.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem;
+    width: 100%;
+  }
+
+  form > input {
+    min-width: 80%;
+  }
+
+  .todo-list {
+    padding: 0.5rem 0;
+    overflow: auto;
+    max-height: 80dvh;
+    max-width: 30dvw;
+  }
+
+</style>
