@@ -52,7 +52,7 @@ export class TodosController {
 
   @UseGuards(AuthGuard('jwt'))
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.todosService.remove(id);
+  remove(@Request() req: SupabaseRequest, @Param('id') id: string) {
+    return this.todosService.remove(req, id);
   }
 }

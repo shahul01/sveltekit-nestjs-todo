@@ -16,4 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: Record<string, unknown>) {
     return { id: payload.sub, email: payload.email };
   }
+
+  // TODO: add authenticate from github.com/hiro1107/nestjs-supabase-auth
+  // so we can send proper auth on user's request
 }

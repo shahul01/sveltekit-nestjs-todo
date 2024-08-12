@@ -1,4 +1,3 @@
-import { PostgrestError } from '@supabase/supabase-js';
 import { Injectable } from '@nestjs/common';
 import { Todo } from './entities/todo.entity';
 import { CreateTodoDto } from './dto/create-todo.dto';
@@ -44,7 +43,7 @@ export class TodosService {
     const { data, error }: SBFindOne = await this.supabaseService.supabase
       .from('todos')
       .select('*')
-      // .eq('user_id', req.user.id)
+      .eq('user_id', req.user.id)
       .eq('id', id)
       .single();
     if (error) throw new Error(error.message);
@@ -59,6 +58,7 @@ export class TodosService {
     const { data, error } = await this.supabaseService.supabase
       .from('todos')
       .update([{ ...todo }])
+      .eq('user_id', req.user.id)
       .eq('id', id)
       .select('*');
     if (error) throw new Error(error.message);
@@ -68,11 +68,12 @@ export class TodosService {
     return `Todo successfully deleted with title '${todo.title}'.`;
   }
 
-  async remove(id: string) {
+  async remove(req: SupabaseRequest, id: string) {
     const { data, error } = await this.supabaseService.supabase
       .from('todos')
       .delete()
-      .eq('id', id);
+      .eq('id', id)
+      .eq('user_id', req.user.id);
 
     if (error) throw new Error(error.message);
 
