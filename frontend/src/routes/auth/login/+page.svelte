@@ -51,12 +51,14 @@
       type="email"
       bind:value={email}
       placeholder="Email"
+      autocomplete="email"
       required
     />
     <input
       type="password"
       bind:value={password}
       placeholder="Password"
+      autocomplete="current-password"
       required
     />
     <button
