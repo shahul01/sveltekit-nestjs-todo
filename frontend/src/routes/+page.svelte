@@ -46,6 +46,27 @@
 
   };
 
+  /** @param {string} id*/
+  async function handleDelete(id) {
+    const token = localStorage.getItem('token');
+    try {
+      const deleteTodo = await fetch(`/todos/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        },
+      });
+
+      const resDeleteTodo = await deleteTodo.json();
+      console.log(`resDeleteTodo: `, resDeleteTodo);
+
+      if (deleteTodo.ok) loadTodos();
+
+    } catch (error) {
+      console.error(error);
+    };
+  };
+
   onMount(() => {
     loadTodos();
   });
@@ -71,7 +92,12 @@
       </form>
       <div class="todo-list">
         {#each todos as currTodo (currTodo.id)}
-          <div class="todo">{currTodo.title}</div>
+          <div class="todo">
+            <p>{currTodo.title}</p>
+            <button type="button" on:click={() => handleDelete(currTodo.id)}>
+              <img src="/images/icons/trash.svg" alt="">
+            </button>
+          </div>
         {/each}
 
       </div>
@@ -117,6 +143,17 @@
     overflow: auto;
     max-height: 80dvh;
     max-width: 30dvw;
+  }
+
+  .todo {
+    display: flex;
+    justify-content: space-between;
+    height: 2rem;
+    align-items: center;
+  }
+
+  .todo img {
+    max-height: 1rem;
   }
 
 </style>
