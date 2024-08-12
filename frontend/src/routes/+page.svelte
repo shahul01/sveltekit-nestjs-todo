@@ -7,7 +7,7 @@
 
   /** @type {import('$lib/types').Todo[]} */
   $: todos = [];
-  $: isTokenStored = false;
+  let isTokenStored = false;
 
   async function loadTodos() {
     const token = localStorage.getItem('token');
@@ -66,7 +66,7 @@
   <a href='/auth/login'>Login</a>
 {/if}
 
-<div class="app">
+<div class="header-form-list">
   <h1>Todo</h1>
   {#if isTokenStored && todos.length}
     <div class="form-todo-list">
@@ -98,12 +98,7 @@
 
 <style>
 
-  button {
-    cursor: pointer;
-    user-select: none;
-  }
-
-  .app {
+  .header-form-list {
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -29,7 +29,7 @@
         // toast('Successfully logged in. Redirecting...');
         email = '';
         password = '';
-        await new Promise((res) => setTimeout(res, 2000) );
+        await new Promise((res) => setTimeout(res, 600) );
         goto('/');
       };
       // TODO: else throw error
