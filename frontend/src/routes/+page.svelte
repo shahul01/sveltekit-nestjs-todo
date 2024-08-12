@@ -72,7 +72,7 @@
 
 <div class="header-form-list">
   <h1>Todo</h1>
-  {#if isTokenStored && todos.length}
+  {#if isTokenStored && Array.isArray(todos)}
     <div class="form-todo-list">
       <form on:submit|preventDefault={handleAddTodo}>
 
