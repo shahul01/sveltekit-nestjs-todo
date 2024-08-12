@@ -1,6 +1,5 @@
 <script>
   import { base } from '$app/paths'
-  import { nanoid } from 'nanoid';
   import { onMount } from 'svelte';
 
   let newTodoTitle = '';
@@ -10,36 +9,41 @@
   let isTokenStored = false;
 
   async function loadTodos() {
-    const token = localStorage.getItem('token');
-    const loadingTodos = await fetch(`${base}/todos`, {
-      headers: { 'Authorization': `Bearer ${token}` },
-    });
-    const resLoadingTodos = await loadingTodos.json();
-    todos = await resLoadingTodos.data;
-    console.log(`todos: `, Array.isArray(todos), todos);
-    return todos;
+    try {
+      const token = localStorage.getItem('token');
+      const loadingTodos = await fetch(`${base}/todos`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+      });
+      const resLoadingTodos = await loadingTodos.json();
+      todos = await resLoadingTodos.data;
+      console.log(`todos: `, Array.isArray(todos), todos);
+    }  catch (error) {
+      console.error(error);
+    };
   };
 
   async function handleAddTodo() {
-    const todoToAdd = {
-      id: nanoid(),
-      title: newTodoTitle,
-      userId: 'added in todos/+server.js'
+    try {
+
+      const todoToAdd = { title: newTodoTitle };
+
+      const token = localStorage.getItem('token');
+
+      await fetch(`${base}/todos`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(todoToAdd)
+      });
+
+      newTodoTitle = '';
+      await loadTodos();
+    } catch (error) {
+      console.error(error);
     };
 
-    const token = localStorage.getItem('token');
-
-    await fetch(`${base}/todos`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify(todoToAdd)
-    });
-
-    newTodoTitle = '';
-    await loadTodos();
   };
 
   function checkToken() {

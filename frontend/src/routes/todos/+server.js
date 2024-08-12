@@ -9,16 +9,15 @@ export async function GET({ request }) {
   const getTodos =  await fetch(`http://${BACKEND_BASEURL}/todos/`, {
     headers: {'Authorization': request.headers.get('Authorization') || ''}
   });
+
   /** @type { import('$lib/types').Todo[] } */
   const resTodos = await getTodos.json();
 
-  if (!getTodos.ok) console.error('Error fetching todos');
-
+  if (!getTodos.ok) console.error('Error fetching todos. ', getTodos.status);
   return json({ data: resTodos });
 
 };
 
-// /** @param {string} todoPayload */
 export async function POST({ request }) {
 
   const addTodoPayloadRaw = await request.json();
@@ -33,6 +32,8 @@ export async function POST({ request }) {
     body: addTodoPayload
   });
 
+  if (!addTodos.ok) console.error('Error fetching todos. ', addTodos.status);
   const resAddTodos= await addTodos.text();
   return json({response:resAddTodos});
+
 };

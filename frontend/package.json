@@ -34,7 +34,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@supabase/supabase-js": "^2.45.1",
-		"nanoid": "^5.0.7"
+		"@supabase/supabase-js": "^2.45.1"
 	}
 }
