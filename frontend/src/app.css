@@ -1,4 +1,18 @@
 
+:root {
+  --my-var: 0;
+}
+
+html, body {
+  margin: 0;
+  padding: 0
+  height: 100%;
+}
+
+.app {
+  font-family: Tahoma, Verdana, Arial, sans-serif;
+}
+
 button {
   cursor: pointer;
   user-select: none;
