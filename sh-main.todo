@@ -9,13 +9,12 @@ Total:
 
     # important:
       ☐ use logger middleware in nestjs
-      ☐ enable registering new user
+      ✔ enable registering new user @done(24-08-15 14:36)
 
       ☐ proper navbar
+      ☐ maketodo updatable in frontend
 
-      ☐ update todo
-
-      ☐ make repo public
+      ✔ make repo public @done(24-08-15 14:36)
       ☐ add release
 
 
